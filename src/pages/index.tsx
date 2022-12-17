@@ -1,7 +1,12 @@
 import React from 'react';
+import LayoutWrapper from "../components/LayoutWrapper";
 
 const Index = () => {
-  return <div>Page1</div>;
+  return (
+    <LayoutWrapper>
+      page1
+    </LayoutWrapper>
+  );
 };
 
 export default Index;

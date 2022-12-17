@@ -1,7 +1,12 @@
 import React from 'react';
+import LayoutWrapper from "../../components/LayoutWrapper";
 
 const Id = () => {
-  return <div>Id</div>;
+  return (
+    <LayoutWrapper>
+        id
+    </LayoutWrapper>
+  );
 };
 
 export default Id;
