@@ -4,6 +4,7 @@ import user_data from '../../user_data.json';
 import ListTile from './ListTile';
 import { nanoid } from 'nanoid';
 import Label from './Label';
+import { useRouter } from 'next/router';
 
 export interface UserList {
   id: number;
@@ -16,13 +17,21 @@ export interface UserList {
 
 interface ViewListProps {
   isCheck?: boolean;
+  getData?: (user: UserList) => void;
 }
 const sortedUser = user_data.slice(0).sort((a: UserList, b: UserList) => {
   return new Date(b.date).valueOf() - new Date(a.date).valueOf();
 });
 
-const ViewList = ({ isCheck = true }: ViewListProps) => {
+const ViewList = ({ isCheck = true, getData }: ViewListProps) => {
+  const router = useRouter();
   const [items, setItems] = useState<UserList[]>(sortedUser);
+  const [user, setUser] = useState<UserList>();
+
+  const getUser = (user: UserList) => {
+    setUser(user);
+    getData?.(user);
+  };
 
   const options = [
     { name: '오름차순', value: 'asc' },
@@ -132,9 +141,11 @@ const ViewList = ({ isCheck = true }: ViewListProps) => {
           ? items.map((item) => <ListTile key={nanoid()} item={item} isCheck={isCheck} />)
           : items
               .filter((value) => value.checked)
-              .map((item) => <ListTile key={nanoid()} item={item} isCheck={isCheck} />)}
+              .map((item) => (
+                <ListTile key={nanoid()} item={item} isCheck={isCheck} getUser={getUser} />
+              ))}
       </ListContainer>
-      {!isCheck && (
+      {!isCheck && !router.pathname.includes('/user') && (
         <SaveButton>
           <Label
             text={'저장하기'}

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { UserList } from './ViewList';
 import styled from 'styled-components';
 import Label from './Label';
@@ -6,23 +6,29 @@ import Label from './Label';
 interface ListTileProps {
   item: UserList;
   isCheck?: boolean;
+  getUser?: (user: UserList) => void;
 }
-const ListTile = ({ item, isCheck }: ListTileProps) => {
+
+const ListTile = ({ item, isCheck, getUser }: ListTileProps) => {
   const [check, setCheck] = useState(item.checked);
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setCheck(e.target.checked);
   };
 
+  const onClick = useCallback(() => {
+    getUser?.(item);
+  }, [item]);
+
   return (
     <>
-      <Container check={check} isCheck={isCheck}>
+      <Container check={check} isCheck={isCheck} onClick={onClick}>
         <ListTileContainer>
           <NameContainer>
             <Label text={item.name} size={15} weight={300} />
           </NameContainer>
           <DateContainer>
-            <Label text={item.date} size={14} weight={300} />
+            <Label text={item.date.replace(/-/g, '.')} size={14} weight={300} />
           </DateContainer>
           {isCheck && (
             <CheckContainer>
@@ -64,7 +70,7 @@ const CheckContainer = styled.div``;
 const DividerContainer = styled.div`
   margin: 0 20px;
 `;
-const Divider = styled.div`
+export const Divider = styled.div`
   min-height: 1px;
   background-color: #ebebeb;
 `;
