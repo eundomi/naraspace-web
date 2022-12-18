@@ -17,10 +17,29 @@ export interface UserList {
 interface ViewListProps {
   isCheck?: boolean;
 }
+const sortedUser = user_data.slice(0).sort((a: UserList, b: UserList) => {
+  return new Date(b.date).valueOf() - new Date(a.date).valueOf();
+});
+
 const ViewList = ({ isCheck = true }: ViewListProps) => {
-  const [items, setItems] = useState<UserList[]>(user_data);
+  const [items, setItems] = useState<UserList[]>(sortedUser);
+
+  const sortByDate = () => {
+    if (optionValue === 'asc') {
+      const sortedUser = items.slice(0).sort((a: UserList, b: UserList) => {
+        return new Date(b.date).valueOf() - new Date(a.date).valueOf();
+      });
+      setItems(sortedUser);
+    } else if (optionValue === 'desc') {
+      const sortedUser = items.slice(0).sort((a: UserList, b: UserList) => {
+        return new Date(a.date).valueOf() - new Date(b.date).valueOf();
+      });
+      setItems(sortedUser);
+    }
+  };
+
   const options = [
-    { name: '오름차순', value: ' asc' },
+    { name: '오름차순', value: 'asc' },
     { name: '내림차순', value: 'desc' },
   ];
   const defaultOption = options[0];
@@ -53,6 +72,10 @@ const ViewList = ({ isCheck = true }: ViewListProps) => {
       setValue(defaultOption.value);
     }
   }, []);
+
+  useEffect(() => {
+    sortByDate();
+  }, [optionValue]);
 
   useEffect(() => {
     const clickOutside = (e: any) => {

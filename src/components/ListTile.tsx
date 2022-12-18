@@ -9,6 +9,7 @@ interface ListTileProps {
 }
 const ListTile = ({ item, isCheck }: ListTileProps) => {
   const [check, setCheck] = useState(item.checked);
+
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setCheck(e.target.checked);
   };
