@@ -88,13 +88,14 @@ const ViewCheckedList = ({ isCheck = true, getData, item, items }: ViewCheckedLi
   };
 
   const onSave = () => {
-    checkedUser
-      .map((item) => item.id)
-      .forEach(async function (id) {
-        const { data } = await axios.patch(`http://localhost:9000/user_data/${id}`, {
-          //해당 id에 대한 item값을 적어야함.
-        });
-      });
+    alert('저장하기 버튼 클릭 하였습니다.')
+    // checkedUser
+    //   .map((item) => item.id)
+    //   .forEach(async function (id) {
+    //     const { data } = await axios.patch(`http://localhost:9000/user_data/${id}`, {
+    //       //해당 id에 대한 item값을 적어야함.
+    //     });
+    //   });
   };
 
   useEffect(() => {
