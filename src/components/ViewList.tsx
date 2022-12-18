@@ -24,20 +24,6 @@ const sortedUser = user_data.slice(0).sort((a: UserList, b: UserList) => {
 const ViewList = ({ isCheck = true }: ViewListProps) => {
   const [items, setItems] = useState<UserList[]>(sortedUser);
 
-  const sortByDate = () => {
-    if (optionValue === 'asc') {
-      const sortedUser = items.slice(0).sort((a: UserList, b: UserList) => {
-        return new Date(b.date).valueOf() - new Date(a.date).valueOf();
-      });
-      setItems(sortedUser);
-    } else if (optionValue === 'desc') {
-      const sortedUser = items.slice(0).sort((a: UserList, b: UserList) => {
-        return new Date(a.date).valueOf() - new Date(b.date).valueOf();
-      });
-      setItems(sortedUser);
-    }
-  };
-
   const options = [
     { name: '오름차순', value: 'asc' },
     { name: '내림차순', value: 'desc' },
@@ -65,6 +51,24 @@ const ViewList = ({ isCheck = true }: ViewListProps) => {
     },
     [toggle],
   );
+
+  const sortByDate = () => {
+    if (optionValue === 'asc') {
+      const sortedUser = items.slice(0).sort((a: UserList, b: UserList) => {
+        return new Date(b.date).valueOf() === new Date(a.date).valueOf()
+          ? a.name.localeCompare(b.name, 'en')
+          : new Date(b.date).valueOf() - new Date(a.date).valueOf();
+      });
+      setItems(sortedUser);
+    } else if (optionValue === 'desc') {
+      const sortedUser = items.slice(0).sort((a: UserList, b: UserList) => {
+        return new Date(a.date).valueOf() === new Date(b.date).valueOf()
+          ? a.name.localeCompare(b.name, 'en')
+          : new Date(a.date).valueOf() - new Date(b.date).valueOf();
+      });
+      setItems(sortedUser);
+    }
+  };
 
   useEffect(() => {
     if (defaultOption) {
