@@ -7,13 +7,14 @@ import { Divider } from './ListTile';
 
 interface ViewProfileProps {
   userInfo: UserList;
+  viewOnly: boolean;
 }
 
-const ViewProfile = ({ userInfo }: ViewProfileProps) => {
+const ViewProfile = ({ userInfo, viewOnly }: ViewProfileProps) => {
   return (
-    <ContentContainer>
+    <ContentContainer viewOnly={viewOnly}>
       <BackgroundContainer>
-        <ImageContainer>
+        <ImageContainer viewOnly={viewOnly}>
           <IconImage
             width={180}
             height={180}
@@ -25,18 +26,18 @@ const ViewProfile = ({ userInfo }: ViewProfileProps) => {
         </ImageContainer>
       </BackgroundContainer>
 
-      <ProfileContainer>
-        <TextContainer>
+      <ProfileContainer viewOnly={viewOnly}>
+        <TextContainer viewOnly={viewOnly}>
           <Label text={'이름'} size={15} weight={'normal'} />
           <Label text={`${userInfo.name}`} size={13} weight={300} />
         </TextContainer>
         <Divider />
-        <TextContainer>
+        <TextContainer viewOnly={viewOnly}>
           <Label text={'생년월일'} size={15} weight={'normal'} />
           <Label text={`${userInfo.date.replace(/-/g, '.')}`} size={13} weight={300} />
         </TextContainer>
         <Divider />
-        <TextContainer>
+        <TextContainer viewOnly={viewOnly}>
           <Label text={'한마디'} size={15} weight={'normal'} />
           <Label text={`${userInfo.comment}`} size={13} weight={300} />
         </TextContainer>
@@ -47,13 +48,13 @@ const ViewProfile = ({ userInfo }: ViewProfileProps) => {
 
 export default ViewProfile;
 
-const ContentContainer = styled.div`
-  padding-left: 20px;
+const ContentContainer = styled.div<{ viewOnly: boolean }>`
+  padding-left: ${({ viewOnly }) => (viewOnly ? 0 : '20px')};
   margin: 0;
   display: flex;
   align-items: flex-start;
   flex-direction: column;
-  width: 352px;
+  width: ${({ viewOnly }) => (viewOnly ? '622px' : '352px')};
   height: 490px;
 `;
 
@@ -67,7 +68,7 @@ const BackgroundContainer = styled.div`
   background-color: rgba(203, 197, 240, 0.5);
 `;
 
-const ImageContainer = styled.div`
+const ImageContainer = styled.div<{ viewOnly: boolean }>`
   display: flex;
   position: absolute;
   background-color: #fff;
@@ -76,11 +77,11 @@ const ImageContainer = styled.div`
   border-radius: 70%;
   overflow: hidden;
   box-shadow: 1px 3px 10px rgba(0, 0, 0, 0.15);
-  margin: 40px 86px;
+  margin: ${({ viewOnly }) => (viewOnly ? '40px 221px' : '40px 86px')};
 `;
 
-const ProfileContainer = styled.div`
-  padding: 68px 25px;
+const ProfileContainer = styled.div<{ viewOnly: boolean }>`
+  padding: ${({ viewOnly }) => (viewOnly ? '68px 155px' : '68px 25px')};
   display: flex;
   flex-direction: column;
   flex: 1;
@@ -90,7 +91,7 @@ const ProfileContainer = styled.div`
   background-color: #fff;
 `;
 
-const TextContainer = styled.div`
+const TextContainer = styled.div<{ viewOnly: boolean }>`
   display: flex;
   flex-direction: row;
   height: 38px;
@@ -98,6 +99,9 @@ const TextContainer = styled.div`
   & > div {
     &:first-child {
       width: 76px;
+    }
+    &:last-child {
+      width: 206px;
     }
   }
 `;
