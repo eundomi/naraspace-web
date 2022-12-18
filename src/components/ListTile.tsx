@@ -48,7 +48,7 @@ const Container = styled.div<{ check: boolean; isCheck?: boolean }>`
   padding: 10px 20px;
   cursor: pointer;
   background-color: ${({ check, isCheck }) =>
-    check ? `${!isCheck ? '#fff' : 'rgba(65, 48, 190, 0.3)'}` : `#fff`};
+    check ? `${!isCheck ? '#fff' : '#CBC5F0'}` : `#fff`};
 `;
 
 const NameContainer = styled.div`
