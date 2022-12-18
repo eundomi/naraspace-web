@@ -37,10 +37,22 @@ const Header = () => {
         />
         <PageContainer>
           <Page onClick={() => router.push('/')}>
-            <Label text={'PAGE 01'} color={homeColor ? '#4130BE' : '#fff'} />
+            <Label
+              text={'PAGE 01'}
+              size={16}
+              color={homeColor ? '#4130BE' : '#fff'}
+              weight={homeColor ? 'bold' : 400}
+              lineHeight={'19.97px'}
+            />
           </Page>
           <Page onClick={() => router.push('/user')}>
-            <Label text={'PAGE 02'} color={userColor ? '#4130BE' : '#fff'} />
+            <Label
+              text={'PAGE 02'}
+              size={16}
+              color={userColor ? '#4130BE' : '#fff'}
+              weight={userColor ? 'bold' : 400}
+              lineHeight={'19.97px'}
+            />
           </Page>
         </PageContainer>
       </ContentContainer>
@@ -51,9 +63,9 @@ const Header = () => {
 export default React.memo(Header);
 
 const Container = styled.div`
-  display:flex;
+  display: flex;
   flex-direction: column;
-  position:fixed;
+  position: fixed;
   top: 0;
   left: 0;
   right: 0;
