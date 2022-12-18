@@ -7,7 +7,7 @@ import { Divider } from './ListTile';
 
 interface ViewProfileProps {
   userInfo: UserList;
-  viewOnly: boolean;
+  viewOnly?: boolean;
 }
 
 const ViewProfile = ({ userInfo, viewOnly }: ViewProfileProps) => {
@@ -48,7 +48,7 @@ const ViewProfile = ({ userInfo, viewOnly }: ViewProfileProps) => {
 
 export default ViewProfile;
 
-const ContentContainer = styled.div<{ viewOnly: boolean }>`
+const ContentContainer = styled.div<{ viewOnly?: boolean }>`
   padding-left: ${({ viewOnly }) => (viewOnly ? 0 : '20px')};
   margin: 0;
   display: flex;
@@ -68,7 +68,7 @@ const BackgroundContainer = styled.div`
   background-color: rgba(203, 197, 240, 0.5);
 `;
 
-const ImageContainer = styled.div<{ viewOnly: boolean }>`
+const ImageContainer = styled.div<{ viewOnly?: boolean }>`
   display: flex;
   position: absolute;
   background-color: #fff;
@@ -77,10 +77,10 @@ const ImageContainer = styled.div<{ viewOnly: boolean }>`
   border-radius: 70%;
   overflow: hidden;
   box-shadow: 1px 3px 10px rgba(0, 0, 0, 0.15);
-  margin: ${({ viewOnly }) => (viewOnly ? '40px 221px' : '40px 86px')};
+  margin: ${({ viewOnly }) => (viewOnly ? '40px 221px' : '40px 76px')};
 `;
 
-const ProfileContainer = styled.div<{ viewOnly: boolean }>`
+const ProfileContainer = styled.div<{ viewOnly?: boolean }>`
   padding: ${({ viewOnly }) => (viewOnly ? '68px 155px' : '68px 25px')};
   display: flex;
   flex-direction: column;
@@ -91,7 +91,7 @@ const ProfileContainer = styled.div<{ viewOnly: boolean }>`
   background-color: #fff;
 `;
 
-const TextContainer = styled.div<{ viewOnly: boolean }>`
+const TextContainer = styled.div<{ viewOnly?: boolean }>`
   display: flex;
   flex-direction: row;
   height: 38px;

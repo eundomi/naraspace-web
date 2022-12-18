@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import ListTile from './ListTile';
 import { nanoid } from 'nanoid';
 import Label from './Label';
+import { useRouter } from 'next/router';
 
 export interface UserList {
   id: number;
@@ -13,13 +14,30 @@ export interface UserList {
   checked: boolean;
 }
 
-interface ViewListProps {
+interface ViewCheckedListProps {
+  isCheck?: boolean;
   item: UserList[];
-  getUsers?: (user: UserList[]) => void;
+  getData?: (user: UserList) => void;
 }
 
-const ViewList = ({ item, getUsers }: ViewListProps) => {
-  const [items, setItems] = useState<UserList[]>(item);
+const ViewCheckedList = ({ isCheck = true, getData, item }: ViewCheckedListProps) => {
+  const router = useRouter();
+  const sortedUser = item.slice(0).sort((a: UserList, b: UserList) => {
+    return new Date(b.date).valueOf() - new Date(a.date).valueOf();
+  });
+  const [checkedUser, setCheckedUser] = useState<UserList[]>(sortedUser);
+  const [user, setUser] = useState<UserList>();
+
+  useEffect(() => {
+    setCheckedUser(sortedUser);
+    setText(options[0].name);
+    setValue(options[0].value);
+  }, [item]);
+
+  const getUser = (user: UserList) => {
+    setUser(user);
+    getData?.(user);
+  };
 
   const options = [
     { name: '오름차순', value: 'asc' },
@@ -51,33 +69,25 @@ const ViewList = ({ item, getUsers }: ViewListProps) => {
 
   const sortByDate = () => {
     if (optionValue === 'asc') {
-      const sortedUser = items.slice(0).sort((a: UserList, b: UserList) => {
+      const sortedUser = checkedUser.slice(0).sort((a: UserList, b: UserList) => {
         return new Date(b.date).valueOf() === new Date(a.date).valueOf()
           ? a.name.localeCompare(b.name, 'en')
           : new Date(b.date).valueOf() - new Date(a.date).valueOf();
       });
-      setItems(sortedUser);
+      setCheckedUser(sortedUser);
     } else if (optionValue === 'desc') {
-      const sortedUser = items.slice(0).sort((a: UserList, b: UserList) => {
+      const sortedUser = checkedUser.slice(0).sort((a: UserList, b: UserList) => {
         return new Date(a.date).valueOf() === new Date(b.date).valueOf()
           ? a.name.localeCompare(b.name, 'en')
           : new Date(a.date).valueOf() - new Date(b.date).valueOf();
       });
-      setItems(sortedUser);
+      setCheckedUser(sortedUser);
     }
   };
 
-  const getChangeUser = useCallback(
-    (user: UserList) => {
-      setItems(
-        items.map((item) => (item.id === user.id ? { ...item, checked: user.checked } : item)),
-      );
-      getUsers?.(
-        items.map((item) => (item.id === user.id ? { ...item, checked: user.checked } : item)),
-      );
-    },
-    [items],
-  );
+  const onSave = () => {
+    console.log(checkedUser);
+  };
 
   useEffect(() => {
     if (defaultOption) {
@@ -137,15 +147,28 @@ const ViewList = ({ item, getUsers }: ViewListProps) => {
         </DateContainer>
       </TextContainer>
       <ListContainer>
-        {items.map((item) => (
-          <ListTile key={nanoid()} item={item} isCheck={true} getChangeUser={getChangeUser} />
-        ))}
+        {!isCheck &&
+          checkedUser.map((item) => (
+            <ListTile key={nanoid()} item={item} isCheck={isCheck} getUser={getUser} />
+          ))}
       </ListContainer>
+      {!isCheck && !router.pathname.includes('/user') && (
+        <SaveButton onClick={onSave}>
+          <Label
+            text={'저장하기'}
+            size={15}
+            weight={300}
+            lineHeight={'18.72px'}
+            textAlign={'center'}
+            color={'#fff'}
+          />
+        </SaveButton>
+      )}
     </ContentContainer>
   );
 };
 
-export default ViewList;
+export default ViewCheckedList;
 
 const ContentContainer = styled.div`
   padding: 0;
@@ -243,4 +266,14 @@ const ListContainer = styled.div`
   flex: 1;
   width: 250px;
   overflow-y: auto;
+`;
+const SaveButton = styled.button`
+  width: 210px;
+  height: 35px;
+  left: 1053px;
+  top: 760px;
+  background: #4130be;
+  border: none;
+  border-radius: 3px;
+  margin: 20px 20px 25px 20px;
 `;

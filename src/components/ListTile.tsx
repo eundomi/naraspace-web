@@ -7,14 +7,19 @@ interface ListTileProps {
   item: UserList;
   isCheck?: boolean;
   getUser?: (user: UserList) => void;
+  getChangeUser?: (user: UserList) => void;
 }
 
-const ListTile = ({ item, isCheck, getUser }: ListTileProps) => {
+const ListTile = ({ item, isCheck, getUser, getChangeUser }: ListTileProps) => {
   const [check, setCheck] = useState(item.checked);
 
-  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setCheck(e.target.checked);
-  };
+  const onChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      setCheck(e.target.checked);
+      getChangeUser?.({ ...item, checked: e.target.checked });
+    },
+    [check],
+  );
 
   const onClick = useCallback(() => {
     getUser?.(item);
