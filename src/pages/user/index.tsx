@@ -21,7 +21,7 @@ const Index = () => {
 
   return (
     <LayoutWrapper>
-      <ViewCheckedList item={checkedUser} isCheck={false} getData={getData} />
+      <ViewCheckedList items={sortedUser} item={checkedUser} isCheck={false} getData={getData} />
       {user && <ViewProfile userInfo={user} />}
     </LayoutWrapper>
   );

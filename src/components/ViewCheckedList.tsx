@@ -4,6 +4,7 @@ import ListTile from './ListTile';
 import { nanoid } from 'nanoid';
 import Label from './Label';
 import { useRouter } from 'next/router';
+import axios from 'axios';
 
 export interface UserList {
   id: number;
@@ -17,10 +18,11 @@ export interface UserList {
 interface ViewCheckedListProps {
   isCheck?: boolean;
   item: UserList[];
+  items: UserList[];
   getData?: (user: UserList) => void;
 }
 
-const ViewCheckedList = ({ isCheck = true, getData, item }: ViewCheckedListProps) => {
+const ViewCheckedList = ({ isCheck = true, getData, item, items }: ViewCheckedListProps) => {
   const router = useRouter();
   const sortedUser = item.slice(0).sort((a: UserList, b: UserList) => {
     return new Date(b.date).valueOf() - new Date(a.date).valueOf();
@@ -86,7 +88,13 @@ const ViewCheckedList = ({ isCheck = true, getData, item }: ViewCheckedListProps
   };
 
   const onSave = () => {
-    console.log(checkedUser);
+    checkedUser
+      .map((item) => item.id)
+      .forEach(async function (id) {
+        const { data } = await axios.patch(`http://localhost:9000/user_data/${id}`, {
+          //해당 id에 대한 item값을 적어야함.
+        });
+      });
   };
 
   useEffect(() => {

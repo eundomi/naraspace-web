@@ -29,7 +29,7 @@ const Index = () => {
       <ImageContainer>
         <IconImage width={50} height={32} alt={'Logo'} src={`/image/arrow.png`} />
       </ImageContainer>
-      <ViewCheckedList item={checkedUser} isCheck={false} />
+      <ViewCheckedList items={user} item={checkedUser} isCheck={false} />
     </LayoutWrapper>
   );
 };
